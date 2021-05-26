@@ -1,0 +1,32 @@
+ 
+  html {
+    scroll-behavior: smooth;
+  } 
+  body {
+    background-color: #163d4a;
+    font-family: 'Forum', cursive;
+}
+
+.firstcontent {
+    font-family: 'Libre Caslon Display', serif;  
+    text-align: center;
+    color: #cecaca;
+    position: absolute;
+    top: 35%;
+    left: 25%;
+    right: 25%;
+    height: 100%;
+}
+
+.firstcontent h1{
+font-size: 6rem;;
+}
+
+.firstcontent h1{
+    font-size: 3rem;
+}
+
+.secondcontent
+{
+    
+}
