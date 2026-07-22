@@ -1,26 +1,683 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Forum&family=Libre+Caslon+Display&display=swap"
-        rel="stylesheet">
-    <title>Saranya T R | Web Developer</title>
-    <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saranya TR — AI & Cloud Solutions Architect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0a0a12;
+    --bg-soft: #100f1c;
+    --panel: rgba(255,255,255,0.045);
+    --panel-border: rgba(255,255,255,0.09);
+    --text: #f3f2fb;
+    --text-dim: #a6a3c2;
+    --text-faint: #6c6890;
+    --violet: #8b7cff;
+    --cyan: #4fe3ff;
+    --pink: #ff6bc4;
+    --lime: #b6ff5c;
+
+    --font-display: 'Sora', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  ::selection{ background: var(--violet); color: #fff; }
+  a{ color:inherit; }
+  img{ max-width:100%; display:block; }
+
+  /* ---------------- gradient mesh backdrop ---------------- */
+  .mesh{
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .mesh span{
+    position:absolute;
+    border-radius:50%;
+    filter: blur(90px);
+    opacity: 0.35;
+  }
+  .mesh .b1{ width:520px; height:520px; background: var(--violet); top:-160px; left:-120px; animation: float1 22s ease-in-out infinite; }
+  .mesh .b2{ width:460px; height:460px; background: var(--cyan); top:120px; right:-140px; animation: float2 26s ease-in-out infinite; }
+  .mesh .b3{ width:420px; height:420px; background: var(--pink); bottom:-160px; left:30%; animation: float3 20s ease-in-out infinite; }
+  @keyframes float1{ 0%,100%{ transform: translate(0,0); } 50%{ transform: translate(60px,80px); } }
+  @keyframes float2{ 0%,100%{ transform: translate(0,0); } 50%{ transform: translate(-70px,50px); } }
+  @keyframes float3{ 0%,100%{ transform: translate(0,0); } 50%{ transform: translate(40px,-60px); } }
+
+  .noise{
+    position: fixed; inset:0; z-index:0; pointer-events:none;
+    background-image: radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size: 3px 3px;
+    opacity: .5;
+  }
+
+  .wrap{ position:relative; z-index:1; max-width: 1200px; margin:0 auto; padding: 0 32px; }
+
+  /* ---------------- nav ---------------- */
+  header{
+    position: sticky; top:0; z-index: 40;
+    padding: 18px 0;
+  }
+  nav{
+    max-width: 1200px; margin:0 auto; padding: 0 32px;
+    display:flex; align-items:center; justify-content: space-between;
+    background: rgba(10,10,18,0.6);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--panel-border);
+    border-radius: 999px;
+    padding: 12px 12px 12px 24px;
+  }
+  .logo{
+    font-family: var(--font-display); font-weight: 700; font-size: 15px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .logo .swatch{ width:10px; height:10px; border-radius:3px; background: linear-gradient(135deg, var(--violet), var(--cyan)); display:inline-block; }
+  nav ul{ list-style:none; display:flex; gap: 28px; font-size: 13.5px; color: var(--text-dim); }
+  nav ul a{ text-decoration:none; transition: color .2s; }
+  nav ul a:hover{ color: var(--text); }
+  nav ul a:focus-visible{ outline: 1px solid var(--violet); outline-offset: 4px; border-radius: 4px; }
+  .nav-cta{
+    font-family: var(--font-mono); font-size: 12.5px;
+    background: linear-gradient(135deg, var(--violet), var(--pink));
+    color: #0a0a12; font-weight:600;
+    padding: 10px 18px; border-radius: 999px; text-decoration:none;
+  }
+  @media (max-width: 760px){ nav ul{ display:none; } }
+
+  /* ---------------- hero ---------------- */
+  .hero{
+    padding: 90px 0 60px;
+    display:grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 40px;
+    align-items:center;
+    min-height: 88vh;
+  }
+  @media (max-width: 980px){ .hero{ grid-template-columns: 1fr; min-height:auto; padding-top:50px; } }
+
+  .kicker{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family: var(--font-mono); font-size:12px; color: var(--cyan);
+    border: 1px solid var(--panel-border); background: var(--panel);
+    padding: 7px 14px; border-radius: 999px;
+    margin-bottom: 26px;
+  }
+  .kicker .pulse{ width:6px; height:6px; border-radius:50%; background: var(--lime); box-shadow: 0 0 10px var(--lime); animation: pulse 2s infinite; }
+  @keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:.3; } }
+
+  .hero h1{
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(38px, 5vw, 60px);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+  }
+  .hero h1 .grad{
+    background: linear-gradient(135deg, var(--violet), var(--cyan) 60%, var(--pink));
+    -webkit-background-clip: text; background-clip:text; color: transparent;
+  }
+  .hero p.lead{
+    margin-top: 22px;
+    font-size: 17px;
+    color: var(--text-dim);
+    max-width: 46ch;
+  }
+  .hero-actions{ margin-top: 34px; display:flex; gap:14px; flex-wrap:wrap; }
+  .btn{
+    font-family: var(--font-body); font-weight:600; font-size: 14px;
+    padding: 14px 24px; border-radius: 12px; text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px;
+    transition: transform .2s, box-shadow .2s, border-color .2s;
+  }
+  .btn-fill{ background: linear-gradient(135deg, var(--violet), var(--pink)); color:#0a0a12; }
+  .btn-fill:hover{ transform: translateY(-2px); box-shadow: 0 12px 30px rgba(139,124,255,0.35); }
+  .btn-outline{ border: 1px solid var(--panel-border); color: var(--text); }
+  .btn-outline:hover{ border-color: var(--cyan); color: var(--cyan); transform: translateY(-2px); }
+  .btn:focus-visible{ outline: 1px solid var(--cyan); outline-offset: 3px; }
+
+  .hero-stats{ display:flex; gap: 30px; margin-top: 46px; flex-wrap:wrap; }
+  .hero-stats div .n{ font-family: var(--font-display); font-size: 26px; font-weight:700; }
+  .hero-stats div .l{ font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); text-transform:uppercase; letter-spacing:.06em; margin-top: 2px; }
+
+  /* ---------------- floating glass mockup stack (signature) ---------------- */
+  .stage{
+    position: relative;
+    height: 480px;
+    perspective: 1200px;
+  }
+  @media (max-width: 980px){ .stage{ height: 380px; } }
+
+  .float-card{
+    position:absolute;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    backdrop-filter: blur(20px);
+    border-radius: 18px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.45);
+    transform-style: preserve-3d;
+    transition: transform .25s ease-out;
+  }
+
+  .card-chat{
+    width: 300px; top: 20px; left: 10%;
+    padding: 18px;
+    animation: bob1 7s ease-in-out infinite;
+  }
+  .card-chat .head{ display:flex; align-items:center; gap:8px; margin-bottom:14px; }
+  .card-chat .head .avatar{ width:22px; height:22px; border-radius:50%; background: linear-gradient(135deg, var(--violet), var(--cyan)); }
+  .card-chat .head .t{ font-family: var(--font-mono); font-size:11px; color: var(--text-faint); }
+  .bubble{ font-size: 12.5px; padding: 10px 13px; border-radius: 12px; margin-bottom: 8px; max-width: 85%; }
+  .bubble.in{ background: rgba(255,255,255,0.07); border-bottom-left-radius: 4px; }
+  .bubble.out{ background: linear-gradient(135deg, rgba(139,124,255,0.35), rgba(79,227,255,0.25)); margin-left:auto; border-bottom-right-radius:4px; }
+
+  .card-stat{
+    width: 190px; top: 250px; left: 0%;
+    padding: 20px;
+    animation: bob2 8s ease-in-out infinite;
+  }
+  .card-stat .k{ font-family: var(--font-mono); font-size: 10.5px; color: var(--text-faint); text-transform:uppercase; }
+  .card-stat .v{ font-family: var(--font-display); font-size: 30px; font-weight:700; margin-top:6px; background: linear-gradient(135deg, var(--lime), var(--cyan)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .card-stat .sub{ font-size: 11.5px; color: var(--text-dim); margin-top: 4px; }
+
+  .card-code{
+    width: 270px; top: 100px; right: 0%;
+    padding: 16px;
+    animation: bob3 9s ease-in-out infinite;
+  }
+  .card-code .dots{ display:flex; gap:6px; margin-bottom: 10px; }
+  .card-code .dots span{ width:8px; height:8px; border-radius:50%; background: rgba(255,255,255,0.15); }
+  .card-code pre{ font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); line-height:1.7; white-space: pre-wrap; }
+  .card-code .kw{ color: var(--pink); }
+  .card-code .fn{ color: var(--cyan); }
+  .card-code .str{ color: var(--lime); }
+
+  .card-badge{
+    width: 160px; bottom: 10px; right: 14%;
+    padding: 14px 16px;
+    display:flex; align-items:center; gap:10px;
+    animation: bob4 6.5s ease-in-out infinite;
+  }
+  .card-badge .ring{ width:30px; height:30px; border-radius:50%; border: 3px solid var(--cyan); border-top-color: transparent; }
+  .card-badge .txt{ font-size: 11.5px; color: var(--text-dim); }
+  .card-badge .txt b{ display:block; font-family: var(--font-display); font-size: 13px; color: var(--text); }
+
+  @keyframes bob1{ 0%,100%{ transform: translateY(0px) rotate(-2deg);} 50%{ transform: translateY(-14px) rotate(1deg);} }
+  @keyframes bob2{ 0%,100%{ transform: translateY(0px) rotate(3deg);} 50%{ transform: translateY(12px) rotate(-1deg);} }
+  @keyframes bob3{ 0%,100%{ transform: translateY(0px) rotate(-1deg);} 50%{ transform: translateY(-10px) rotate(2deg);} }
+  @keyframes bob4{ 0%,100%{ transform: translateY(0px);} 50%{ transform: translateY(10px);} }
+
+  /* ---------------- ticker ---------------- */
+  .ticker-wrap{
+    border-top: 1px solid var(--panel-border);
+    border-bottom: 1px solid var(--panel-border);
+    padding: 22px 0;
+    overflow: hidden;
+    position: relative;
+    z-index:1;
+  }
+  .ticker{
+    display:flex;
+    gap: 50px;
+    white-space: nowrap;
+    animation: scrollTicker 34s linear infinite;
+    width: max-content;
+  }
+  .ticker span{
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-faint);
+    display:flex; align-items:center; gap:10px;
+  }
+  .ticker span::before{ content:'◆'; color: var(--violet); font-size:9px; }
+  @keyframes scrollTicker{ from{ transform: translateX(0); } to{ transform: translateX(-50%); } }
+
+  /* ---------------- section shell ---------------- */
+  section{ padding: 110px 0; position:relative; z-index:1; }
+  .head-row{ display:flex; align-items:flex-end; justify-content:space-between; gap: 20px; margin-bottom: 50px; flex-wrap:wrap; }
+  .head-row .tag{ font-family: var(--font-mono); font-size:12px; color: var(--cyan); margin-bottom:10px; display:block; }
+  .head-row h2{ font-family: var(--font-display); font-size: clamp(28px,3.6vw,42px); font-weight:700; letter-spacing:-0.02em; }
+  .head-row p{ color: var(--text-dim); max-width: 34ch; font-size: 14.5px; }
+
+  /* ---------------- bento expertise ---------------- */
+  .bento{
+    display:grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: 150px;
+    gap: 16px;
+  }
+  .bento .cell{
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 18px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color .25s, transform .25s;
+  }
+  .bento .cell:hover{ border-color: rgba(255,255,255,0.22); transform: translateY(-3px); }
+  .bento .cell h3{ font-family: var(--font-display); font-size: 16px; font-weight:600; margin-bottom: 12px; }
+  .bento .cell ul{ list-style:none; display:flex; flex-wrap:wrap; gap:6px; }
+  .bento .cell li{ font-family: var(--font-mono); font-size: 10.5px; color: var(--text-dim); background: rgba(255,255,255,0.05); border: 1px solid var(--panel-border); padding: 4px 9px; border-radius: 999px; }
+  .bento .glow{ position:absolute; width:140px; height:140px; border-radius:50%; filter: blur(60px); opacity:.25; top:-40px; right:-40px; }
+
+  .c1{ grid-column: span 3; grid-row: span 2; }
+  .c2{ grid-column: span 3; grid-row: span 1; }
+  .c3{ grid-column: span 3; grid-row: span 1; }
+  .c4{ grid-column: span 2; grid-row: span 1; }
+  .c5{ grid-column: span 2; grid-row: span 1; }
+  .c6{ grid-column: span 2; grid-row: span 1; }
+
+  @media (max-width: 860px){
+    .bento{ grid-template-columns: repeat(2,1fr); grid-auto-rows: auto; }
+    .bento .cell{ grid-column: span 2 !important; grid-row: auto !important; }
+  }
+
+  /* ---------------- changelog experience ---------------- */
+  .changelog{ display:flex; flex-direction: column; gap: 0; }
+  .rel{
+    display:grid;
+    grid-template-columns: 140px 1fr;
+    gap: 34px;
+    padding: 40px 0;
+    border-top: 1px solid var(--panel-border);
+  }
+  .rel:first-child{ border-top:none; }
+  @media (max-width: 700px){ .rel{ grid-template-columns: 1fr; gap: 12px; } }
+
+  .rel-v{
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+  .rel-v .tag{
+    display:inline-block;
+    font-size: 10.5px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .tag-current{ background: rgba(182,255,92,0.15); color: var(--lime); border: 1px solid rgba(182,255,92,0.3); }
+  .tag-past{ background: rgba(255,255,255,0.06); color: var(--text-faint); border: 1px solid var(--panel-border); }
+  .rel-v .date{ color: var(--text-faint); display:block; margin-top: 6px; }
+
+  .rel-body h3{ font-family: var(--font-display); font-size: 21px; font-weight:700; }
+  .rel-body .org{ font-family: var(--font-mono); font-size: 12.5px; color: var(--cyan); margin: 6px 0 16px; }
+  .rel-body ul{ list-style:none; display:flex; flex-direction:column; gap:9px; }
+  .rel-body li{ font-size: 14px; color: var(--text-dim); padding-left: 20px; position:relative; }
+  .rel-body li::before{
+    content:'+';
+    position:absolute; left:0; top:0;
+    color: var(--lime);
+    font-family: var(--font-mono); font-weight:700;
+  }
+
+  /* ---------------- projects ---------------- */
+  .proj-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap: 22px; }
+  @media (max-width: 900px){ .proj-grid{ grid-template-columns: 1fr; } }
+  .proj{
+    border-radius: 20px;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(139,124,255,0.5), rgba(79,227,255,0.15), transparent 60%);
+  }
+  .proj-in{
+    background: var(--bg-soft);
+    border-radius: 19px;
+    padding: 28px;
+    height: 100%;
+    transition: transform .25s;
+  }
+  .proj:hover .proj-in{ transform: translateY(-4px); }
+  .proj .tag{ font-family: var(--font-mono); font-size:10.5px; color: var(--pink); text-transform:uppercase; letter-spacing:.06em; }
+  .proj h3{ font-family: var(--font-display); font-size: 19px; margin: 10px 0 14px; }
+  .proj ul{ list-style:none; display:flex; flex-direction:column; gap:9px; }
+  .proj li{ font-size: 13.5px; color: var(--text-dim); padding-left:18px; position:relative; }
+  .proj li::before{ content:'›'; position:absolute; left:0; color: var(--cyan); }
+
+  /* ---------------- languages ---------------- */
+  .lang-row{ display:flex; gap:12px; flex-wrap:wrap; }
+  .lang-pill{
+    font-family: var(--font-mono); font-size: 12px;
+    border: 1px solid var(--panel-border);
+    background: var(--panel);
+    padding: 10px 16px; border-radius: 999px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .lang-pill .dot{ width:6px; height:6px; border-radius:50%; }
+  .lvl-fluent{ background: var(--lime); }
+  .lvl-native{ background: var(--cyan); }
+  .lvl-basic{ background: var(--text-faint); }
+
+  /* ---------------- footer CTA ---------------- */
+  footer{ padding: 60px 0 80px; position:relative; z-index:1; }
+  .cta-panel{
+    background: linear-gradient(135deg, rgba(139,124,255,0.15), rgba(79,227,255,0.08));
+    border: 1px solid var(--panel-border);
+    border-radius: 28px;
+    padding: 64px 48px;
+    text-align:center;
+  }
+  .cta-panel h2{ font-family: var(--font-display); font-size: clamp(28px,4vw,44px); font-weight:800; letter-spacing:-0.02em; }
+  .cta-panel p{ color: var(--text-dim); margin-top: 14px; }
+  .cta-panel .hero-actions{ justify-content:center; margin-top: 30px; }
+  .foot-meta{
+    margin-top: 40px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-family: var(--font-mono); font-size: 11.5px; color: var(--text-faint);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
 </head>
-
 <body>
-    <div class="container">
-        <section class="firstcontent">
-            <h1>SARANYA T R </h1>
-            <h3>Programmer | Web Designer</h3>
-        </section>
-        <section class="secondcontent">
 
-        </section>
+<div class="mesh" aria-hidden="true"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
+<div class="noise" aria-hidden="true"></div>
+
+<header>
+  <nav>
+    <div class="logo"><span class="swatch"></span>Saranya&nbsp;TR</div>
+    <ul>
+      <li><a href="#expertise">Stack</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a class="nav-cta" href="https://www.linkedin.com/in/saranyatr/" target="_blank" rel="noopener">Let's talk →</a>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div>
+      <div class="kicker"><span class="pulse"></span>Open to new builds — Dubai, UAE</div>
+      <h1>Shipping <span class="grad">AI-powered</span> systems on Azure, end to end.</h1>
+      <p class="lead">Senior .NET developer and cloud/AI engineer with 9+ years turning enterprise requirements into production platforms — auth, data, RAG chatbots, and everything that has to actually stay up.</p>
+      <div class="hero-actions">
+        <a class="btn btn-fill" href="#projects">See the work</a>
+        <a class="btn btn-outline" href="https://www.linkedin.com/in/saranyatr/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="n">9+</div><div class="l">Years shipping</div></div>
+        <div><div class="n">4</div><div class="l">Enterprises served</div></div>
+        <div><div class="n">RAG</div><div class="l">AI specialization</div></div>
+      </div>
+    </div>
+
+    <div class="stage" id="stage">
+      <div class="float-card card-chat" data-depth="20">
+        <div class="head"><div class="avatar"></div><div class="t">rag-assistant · azure openai</div></div>
+        <div class="bubble in">Which invoices are overdue this quarter?</div>
+        <div class="bubble out">Pulled 14 records from SQL Server — 3 flagged past terms.</div>
+      </div>
+
+      <div class="float-card card-stat" data-depth="35">
+        <div class="k">Uptime</div>
+        <div class="v">99.9%</div>
+        <div class="sub">Azure App Services</div>
+      </div>
+
+      <div class="float-card card-code" data-depth="15">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <pre><span class="kw">app</span>.<span class="fn">MapPost</span>(<span class="str">"/auth/sso"</span>, <span class="kw">async</span> () =&gt;
+  <span class="kw">await</span> entra.<span class="fn">Validate</span>(token));</pre>
+      </div>
+
+      <div class="float-card card-badge" data-depth="28">
+        <div class="ring"></div>
+        <div class="txt"><b>Entra ID</b>SSO verified</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker" id="ticker">
+      <span>C# / .NET Core</span><span>Azure OpenAI</span><span>RAG</span><span>SQL Server</span><span>ReactJS</span><span>Entra ID</span><span>MongoDB</span><span>Python</span><span>Key Vault</span><span>Ollama</span>
+      <span>C# / .NET Core</span><span>Azure OpenAI</span><span>RAG</span><span>SQL Server</span><span>ReactJS</span><span>Entra ID</span><span>MongoDB</span><span>Python</span><span>Key Vault</span><span>Ollama</span>
+    </div>
+  </div>
+
+  <!-- EXPERTISE (bento) -->
+  <section id="expertise">
+    <div class="head-row">
+      <div><span class="tag">// stack.json</span><h2>What I build with</h2></div>
+      <p>Six areas that cover the full path from database to deployed AI feature.</p>
+    </div>
+
+    <div class="bento">
+      <div class="cell c1">
+        <div class="glow" style="background:var(--violet)"></div>
+        <h3>Programming Languages</h3>
+        <ul><li>C#</li><li>ASP.NET Core</li><li>.NET MVC</li><li>Web API</li><li>Python</li><li>JavaScript</li></ul>
+      </div>
+      <div class="cell c2">
+        <div class="glow" style="background:var(--cyan)"></div>
+        <h3>Cloud</h3>
+        <ul><li>Microsoft Azure</li><li>App Services</li><li>Functions</li><li>Entra ID</li><li>Azure OpenAI</li><li>Key Vault</li></ul>
+      </div>
+      <div class="cell c3">
+        <div class="glow" style="background:var(--pink)"></div>
+        <h3>AI &amp; Automation</h3>
+        <ul><li>Azure OpenAI (GPT)</li><li>RAG</li><li>Embeddings</li><li>Ollama</li><li>Python Automation</li></ul>
+      </div>
+      <div class="cell c4">
+        <div class="glow" style="background:var(--lime)"></div>
+        <h3>Frontend</h3>
+        <ul><li>ReactJS</li><li>HTML5</li><li>CSS3</li><li>Bootstrap</li></ul>
+      </div>
+      <div class="cell c5">
+        <div class="glow" style="background:var(--violet)"></div>
+        <h3>Database</h3>
+        <ul><li>SQL Server</li><li>MongoDB</li><li>MySQL</li></ul>
+      </div>
+      <div class="cell c6">
+        <div class="glow" style="background:var(--cyan)"></div>
+        <h3>Integration</h3>
+        <ul><li>M365 / Exchange</li><li>OAuth2</li><li>OpenID</li><li>JWT</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE as changelog -->
+  <section id="experience">
+    <div class="head-row">
+      <div><span class="tag">// CHANGELOG.md</span><h2>Career, versioned</h2></div>
+      <p>Every role shipped as a release — reverse chronological.</p>
+    </div>
+
+    <div class="changelog">
+
+      <div class="rel">
+        <div class="rel-v">
+          <span class="tag tag-current">current</span>
+          v9.0
+          <span class="date">Oct 2024 — Present</span>
+        </div>
+        <div class="rel-body">
+          <h3>Senior Software Developer</h3>
+          <div class="org">Finessetech IT Solutions LLC — Dubai</div>
+          <ul>
+            <li>Designed an enterprise-level Visitor Management System on ASP.NET Core and SQL Server.</li>
+            <li>Shipped Microsoft Exchange room-booking integration with business rule validation.</li>
+            <li>Wired up Azure AD SSO via OAuth2 and OpenID Connect.</li>
+            <li>Built an AI chatbot on Azure OpenAI using retrieval-augmented generation.</li>
+            <li>Added facial recognition auth through third-party REST APIs.</li>
+            <li>Tuned stored procedures and database performance.</li>
+            <li>Deployed and manage the full stack on Azure.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rel">
+        <div class="rel-v">
+          <span class="tag tag-past">past</span>
+          v8.0
+          <span class="date">Jul 2023 — Jul 2024</span>
+        </div>
+        <div class="rel-body">
+          <h3>Full Stack Developer</h3>
+          <div class="org">Eureka Infinity Computer Trading LLC — Dubai</div>
+          <ul>
+            <li>Built responsive web applications and backend APIs.</li>
+            <li>Refactored and optimized queries for performance.</li>
+            <li>Delivered an ERP solution for exchange firms.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rel">
+        <div class="rel-v">
+          <span class="tag tag-past">past</span>
+          v7.0
+          <span class="date">Nov 2019 — Dec 2021</span>
+        </div>
+        <div class="rel-body">
+          <h3>Senior Software Developer</h3>
+          <div class="org">GW Innovations — India</div>
+          <ul>
+            <li>Designed and developed ASP.NET MVC applications.</li>
+            <li>Optimized stored procedures across SQL Server.</li>
+            <li>Maintained and enhanced enterprise applications.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rel">
+        <div class="rel-v">
+          <span class="tag tag-past">past</span>
+          v6.0
+          <span class="date">Aug 2017 — Sept 2018</span>
+        </div>
+        <div class="rel-body">
+          <h3>Senior Software Developer</h3>
+          <div class="org">Reon Technologies Pvt. Ltd. — India</div>
+          <ul>
+            <li>Designed and developed ASP.NET MVC applications.</li>
+            <li>Optimized stored procedures across SQL Server.</li>
+            <li>Maintained and enhanced enterprise applications.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="head-row">
+      <div><span class="tag">// projects</span><h2>Selected builds</h2></div>
+      <p>Three systems that shipped end to end.</p>
+    </div>
+
+    <div class="proj-grid">
+      <div class="proj">
+        <div class="proj-in">
+          <div class="tag">Enterprise SaaS</div>
+          <h3>Visitor Management System</h3>
+          <ul>
+            <li>Full visitor lifecycle: pre-registration, QR/PIN check-in, meeting booking, admin dashboard.</li>
+            <li>Exchange room mailboxes integrated for automated scheduling.</li>
+            <li>Azure AD SSO throughout.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="proj">
+        <div class="proj-in">
+          <div class="tag">Azure OpenAI · RAG</div>
+          <h3>AI Avatar Chatbot</h3>
+          <ul>
+            <li>Chatbot built on the Azure OpenAI API.</li>
+            <li>RAG model for document-grounded responses.</li>
+            <li>Speech and viseme-based avatar animation.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="proj">
+        <div class="proj-in">
+          <div class="tag">Python Automation</div>
+          <h3>PPT Automation</h3>
+          <ul>
+            <li>Automated PowerPoint report generation in Python.</li>
+            <li>Auto-generates export–import analysis per country from Word/Excel sources.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LANGUAGES -->
+  <section id="languages">
+    <div class="head-row">
+      <div><span class="tag">// locales</span><h2>Languages</h2></div>
+    </div>
+    <div class="lang-row">
+      <div class="lang-pill"><span class="dot lvl-fluent"></span>English — Fluent</div>
+      <div class="lang-pill"><span class="dot lvl-native"></span>Malayalam — Native</div>
+      <div class="lang-pill"><span class="dot lvl-basic"></span>Hindi — Basic</div>
+      <div class="lang-pill"><span class="dot lvl-basic"></span>Tamil — Basic</div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="wrap" id="contact">
+  <div class="cta-panel">
+    <h2>Let's build the next release.</h2>
+    <p>Open to senior .NET, cloud, and AI engineering roles — Dubai and remote.</p>
+    <div class="hero-actions">
+      <a class="btn btn-fill" href="https://www.linkedin.com/in/saranyatr/" target="_blank" rel="noopener">Message on LinkedIn ↗</a>
+    </div>
+  </div>
+  <div class="foot-meta">
+    <span>© 2026 Saranya TR</span>
+    <span>Built with .NET energy, deployed on Azure</span>
+  </div>
+</footer>
+
+<script>
+  // 3D parallax tilt for the floating glass mockup stack
+  (function(){
+    var stage = document.getElementById('stage');
+    if(!stage) return;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduce) return;
+    var cards = stage.querySelectorAll('.float-card');
+
+    stage.addEventListener('mousemove', function(e){
+      var r = stage.getBoundingClientRect();
+      var relX = (e.clientX - r.left) / r.width - 0.5;
+      var relY = (e.clientY - r.top) / r.height - 0.5;
+      cards.forEach(function(card){
+        var depth = parseFloat(card.getAttribute('data-depth')) || 20;
+        var rx = relY * -depth * 0.6;
+        var ry = relX * depth * 0.6;
+        card.style.transform = 'rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) translateZ(10px)';
+      });
+    });
+    stage.addEventListener('mouseleave', function(){
+      cards.forEach(function(card){ card.style.transform = ''; });
+    });
+  })();
+</script>
+
 </body>
-
 </html>
